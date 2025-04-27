@@ -20,8 +20,8 @@ openai.api_key = OPENAI_API_KEY
 def create_thread():
     try:
         # Create a thread using OpenAI API
-        thread = openai.beta.threads.create()
-        return jsonify({"thread_id": thread.id})
+        response = openai.Thread.create()
+        return jsonify({"thread_id": response.id})
     except Exception as e:
         print(f"Error creating thread: {str(e)}")
         return jsonify({"error": str(e)}), 500
@@ -35,7 +35,7 @@ def add_message(thread_id):
         content = data.get('content', '')
         
         # Add message to thread using OpenAI API
-        message = openai.beta.threads.messages.create(
+        message = openai.ThreadMessage.create(
             thread_id=thread_id,
             role=role,
             content=content
@@ -54,7 +54,7 @@ def create_run(thread_id):
         assistant_id = data.get('assistant_id')
         
         # Create a run using OpenAI API
-        run = openai.beta.threads.runs.create(
+        run = openai.ThreadRun.create(
             thread_id=thread_id,
             assistant_id=assistant_id
         )
@@ -69,7 +69,7 @@ def create_run(thread_id):
 def get_run(thread_id, run_id):
     try:
         # Retrieve run status using OpenAI API
-        run = openai.beta.threads.runs.retrieve(
+        run = openai.ThreadRun.retrieve(
             thread_id=thread_id,
             run_id=run_id
         )
@@ -87,7 +87,7 @@ def get_run(thread_id, run_id):
 def list_messages(thread_id):
     try:
         # List messages using OpenAI API
-        messages = openai.beta.threads.messages.list(
+        messages = openai.ThreadMessage.list(
             thread_id=thread_id
         )
         
